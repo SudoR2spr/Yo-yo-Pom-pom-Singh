@@ -47,14 +47,7 @@
       border-radius: 10px;
       margin-bottom: 15px;
     }
-    .title {
-      display: block;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 8px;
-      word-break: break-all;
-    }
+    
     .meta {
       font-size: 14px;
       color: #555;
@@ -77,6 +70,18 @@
       text-decoration: underline;
     }
     .footer {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 0 0 10px 0;         /* margin ঠিক করা */
+      padding-left: 12px;         /* বাম পাশে ইনডেন্ট */
+      border-left: 4px solid #999;/* quote look এর জন্য */
+      font-style: normal;         /* blockquote এর italic বন্ধ */
+      word-break: break-word;     /* লাইন ভাঙা যেন ঠিক হয় */
+      overflow-wrap: break-word;  /* লাইন ভাঙা নিশ্চিত */
+    }
+    
+    {
     position: fixed;
     bottom: 0;
     left: 0;
