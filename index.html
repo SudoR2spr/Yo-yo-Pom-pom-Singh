@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📡 Latest Torrent Feed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .card img.thumbnail {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .link {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>📡 Latest Torrents</h1>
+  <div class="container" id="feed-container">
+    <p>⏳ Loading feed...</p>
+  </div>
+
+  <script>
+    async function loadFeed() {
+      const container = document.getElementById("feed-container");
+      try {
+        const res = await fetch("https://pom-api-orpin.vercel.app/rss");
+        const data = await res.json();
+
+        container.innerHTML = "";
+
+        if (data.status === "success") {
+          data.items.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const fileSize = item.summary.includes("File Size:") ? item.summary.split("Duration")[0].replace("File Size:", "").trim() : "N/A";
+            const duration = item.summary.includes("Duration:") ? item.summary.split("Duration:")[1].trim() : "N/A";
+
+            card.innerHTML = `
+              ${item.thumbnail ? `<img class="thumbnail" src="${item.thumbnail}" alt="Thumbnail">` : ""}
+              <div class="title">${item.title}</div>
+              <div class="meta">Published: ${item.published}</div>
+              <div class="summary-row">
+                <div><strong>Size:</strong> ${fileSize}</div>
+                <div><strong>Duration:</strong> ${duration}</div>
+              </div>
+              <a class="link" href="${item.link}" target="_blank">🔗 Download Torrent</a>
+            `;
+
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = `<p>❌ Error loading feed.</p>`;
+        }
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<p>⚠️ Failed to fetch feed.</p>`;
+      }
+    }
+
+    loadFeed();
+  </script>
+</body>
+</html>
