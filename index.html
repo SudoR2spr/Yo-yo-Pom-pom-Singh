@@ -20,6 +20,20 @@
       margin: 0 auto;
       padding-top: 20px;
     }
+    .load-button {
+      display: block;
+      margin: 0 auto 20px;
+      padding: 12px 25px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .load-button:hover {
+      background-color: #0056b3;
+    }
     .card {
       background-color: #fff;
       border-radius: 10px;
@@ -63,13 +77,18 @@
 </head>
 <body>
   <h1>📡 Latest Torrents</h1>
-  <div class="container" id="feed-container">
-    <p>⏳ Loading feed...</p>
+
+  <div class="container">
+    <button class="load-button" onclick="loadFeed()">📥 Load Feed</button>
+    <div id="feed-container">
+      <!-- Feed items will be loaded here -->
+    </div>
   </div>
 
   <script>
     async function loadFeed() {
       const container = document.getElementById("feed-container");
+      container.innerHTML = "<p>⏳ Loading feed...</p>";
       try {
         const response = await fetch("https://pom-api-orpin.vercel.app/rss");
         const data = await response.json();
@@ -84,7 +103,6 @@
           const card = document.createElement("div");
           card.className = "card";
 
-          // Extract file size and duration from summary
           let size = "N/A", duration = "N/A";
           const sizeMatch = item.summary.match(/File Size:\s*([\d.]+ [A-Z]+)/i);
           const durationMatch = item.summary.match(/Duration:\s*([\d:]+)/i);
@@ -109,8 +127,6 @@
         container.innerHTML = `<p>⚠️ Failed to fetch feed.</p>`;
       }
     }
-
-    loadFeed();
   </script>
 </body>
 </html>
