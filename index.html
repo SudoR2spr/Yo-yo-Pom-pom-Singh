@@ -90,7 +90,7 @@
       const container = document.getElementById("feed-container");
       container.innerHTML = "<p>⏳ Loading feed...</p>";
       try {
-        const response = await fetch("https://pom-api-orpin.vercel.app/rss");
+        const response = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent("https://pom-api-orpin.vercel.app/rss"));
         const data = await response.json();
 
         if (data.status !== "success") {
